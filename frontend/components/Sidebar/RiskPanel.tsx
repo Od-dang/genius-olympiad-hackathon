@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { RiskAssessment, DisasterRisk, RISK_BORDER, RISK_TEXT, RISK_BG, RISK_CARD_BG, RISK_GLOW, RISK_COLORS } from '@/types';
+import { RiskAssessment, DisasterRisk, RISK_BORDER, RISK_TEXT, RISK_CARD_BG, RISK_GLOW, RISK_COLORS } from '@/types';
 import DisasterBadge from '@/components/ui/DisasterBadge';
 
 interface Props {
