@@ -8,6 +8,10 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ['TT Lakes Neue', 'Inter', 'system-ui', 'sans-serif'],
+        display: ['TT Lakes Neue', 'Inter', 'system-ui', 'sans-serif'],
+      },
       colors: {
         navy: {
           950: '#020c1a',

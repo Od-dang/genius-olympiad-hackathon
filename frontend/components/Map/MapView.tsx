@@ -6,13 +6,8 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import { RiskAssessment, RISK_COLORS, RiskLevel } from '@/types';
 
-// Fix Leaflet's broken default icon in Next.js/webpack
-L.Icon.Default.mergeOptions({
-  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png',
-  iconRetinaUrl:
-    'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png',
-  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png',
-});
+// We always use createRiskIcon (divIcon), so suppress Leaflet's broken default icon warning
+delete (L.Icon.Default.prototype as any)._getIconUrl;
 
 function createRiskIcon(level: RiskLevel): L.DivIcon {
   const color = RISK_COLORS[level];
