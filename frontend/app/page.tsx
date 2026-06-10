@@ -86,6 +86,7 @@ export default function Home() {
           <MapView
             selectedLocation={selectedLocation}
             assessment={assessment}
+            loading={loading}
             onLocationSelect={fetchRisk}
           />
 

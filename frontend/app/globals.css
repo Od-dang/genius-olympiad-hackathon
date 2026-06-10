@@ -53,23 +53,19 @@ body,
   background-color: #020c1a;
 }
 
-/* Leaflet z-index fixes */
-.leaflet-pane,
-.leaflet-tile,
-.leaflet-marker-icon,
-.leaflet-marker-shadow,
-.leaflet-tile-pane,
-.leaflet-overlay-pane,
-.leaflet-shadow-pane,
-.leaflet-marker-pane,
-.leaflet-popup-pane,
+/* Leaflet z-index fixes — only reset base canvas/svg, keep marker/popup panes layered correctly */
 .leaflet-map-pane canvas,
 .leaflet-map-pane svg {
   z-index: auto !important;
 }
-.leaflet-control  { z-index: 800 !important; }
+.leaflet-tile-pane    { z-index: 200 !important; }
+.leaflet-overlay-pane { z-index: 400 !important; }
+.leaflet-shadow-pane  { z-index: 500 !important; }
+.leaflet-marker-pane  { z-index: 600 !important; }
+.leaflet-popup-pane   { z-index: 700 !important; }
+.leaflet-control      { z-index: 800 !important; }
 .leaflet-top,
-.leaflet-bottom   { z-index: 800 !important; }
+.leaflet-bottom       { z-index: 800 !important; }
 
 /* Critical marker pulse */
 @keyframes risk-pulse {
@@ -77,6 +73,18 @@ body,
   50%       { box-shadow: 0 0 0 8px rgba(239,68,68,0); }
 }
 .risk-marker-critical { animation: risk-pulse 1.5s infinite; }
+
+/* Reset Leaflet divIcon defaults so our custom markers render correctly */
+.leaflet-div-icon {
+  background: transparent !important;
+  border: none !important;
+}
+
+/* Loading marker ping (scale-based — not clipped unlike box-shadow) */
+@keyframes marker-ping {
+  0%        { transform: scale(1);   opacity: 0.7; }
+  75%, 100% { transform: scale(2.5); opacity: 0;   }
+}
 
 /* Scrollbar */
 ::-webkit-scrollbar       { width: 5px; }

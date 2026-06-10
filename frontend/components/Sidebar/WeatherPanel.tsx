@@ -22,6 +22,7 @@ interface Props {
   weather: WeatherData;
 }
 
+
 function Stat({ label, value, sub, accent }: {
   label: string;
   value: string;

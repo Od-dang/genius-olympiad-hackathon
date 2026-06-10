@@ -8,22 +8,34 @@ import { RiskAssessment, RISK_COLORS, RiskLevel } from '@/types';
 // We always use createRiskIcon (divIcon), so suppress Leaflet's broken default icon warning
 delete (L.Icon.Default.prototype as any)._getIconUrl;
 
+function createLoadingIcon(): L.DivIcon {
+  return L.divIcon({
+    html: `<div style="position:relative;width:36px;height:36px;">
+      <div style="position:absolute;inset:0;border-radius:50%;background:#3b82f6;animation:marker-ping 1s cubic-bezier(0,0,0.2,1) infinite;"></div>
+      <div style="position:absolute;top:4px;left:4px;width:28px;height:28px;border-radius:50%;background:#3b82f6;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,0.6);"></div>
+    </div>`,
+    iconSize: [36, 36],
+    iconAnchor: [18, 18],
+    popupAnchor: [0, -18],
+    className: '',
+  });
+}
+
 function createRiskIcon(level: RiskLevel): L.DivIcon {
   const color = RISK_COLORS[level];
   const isCritical = level === 'CRITICAL';
   return L.divIcon({
     html: `<div style="
       background: ${color};
-      width: 22px;
-      height: 22px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       border: 3px solid white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.4), 0 0 0 0 ${color};
-      ${isCritical ? 'animation: risk-pulse 1.5s infinite;' : ''}
+      box-shadow: 0 2px 10px rgba(0,0,0,0.5);
     "></div>`,
-    iconSize: [22, 22],
-    iconAnchor: [11, 11],
-    popupAnchor: [0, -14],
+    iconSize: [26, 26],
+    iconAnchor: [13, 13],
+    popupAnchor: [0, -16],
     className: isCritical ? 'risk-marker-critical' : '',
   });
 }
@@ -40,10 +52,11 @@ function ClickHandler({ onSelect }: { onSelect: (lat: number, lon: number) => vo
 interface Props {
   selectedLocation: { lat: number; lon: number } | null;
   assessment: RiskAssessment | null;
+  loading: boolean;
   onLocationSelect: (lat: number, lon: number) => void;
 }
 
-export default function MapView({ selectedLocation, assessment, onLocationSelect }: Props) {
+export default function MapView({ selectedLocation, assessment, loading, onLocationSelect }: Props) {
   return (
     <MapContainer
       center={[38.5, -96]}
@@ -63,7 +76,7 @@ export default function MapView({ selectedLocation, assessment, onLocationSelect
       {selectedLocation && (
         <Marker
           position={[selectedLocation.lat, selectedLocation.lon]}
-          icon={createRiskIcon(assessment?.highestRisk ?? 'NONE')}
+          icon={loading ? createLoadingIcon() : createRiskIcon(assessment?.highestRisk ?? 'NONE')}
         >
           {assessment && (
             <Popup className="risk-popup">
