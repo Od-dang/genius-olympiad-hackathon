@@ -7,13 +7,15 @@ import RiskPanel from './RiskPanel';
 import PastDisasters from './PastDisasters';
 import NearbyAlerts from './NearbyAlerts';
 import TipsGuides from './TipsGuides';
+import ThresholdsGuide from './ThresholdsGuide';
 
 const TABS = [
-  { id: 'risk',    label: '⚠️ Risk',    title: 'Risk Assessment' },
-  { id: 'weather', label: '🌡️ Weather', title: 'Current Conditions' },
-  { id: 'alerts',  label: '🔔 Alerts',  title: 'Nearby Alerts' },
-  { id: 'past',    label: '📋 History', title: 'Past Disasters' },
-  { id: 'tips',    label: '📚 Tips',    title: 'Preparation Guides' },
+  { id: 'risk',       label: '⚠️ Risk',       title: 'Risk Assessment' },
+  { id: 'weather',    label: '🌡️ Weather',    title: 'Current Conditions' },
+  { id: 'alerts',     label: '🔔 Alerts',     title: 'Nearby Alerts' },
+  { id: 'past',       label: '📋 History',    title: 'Past Disasters' },
+  { id: 'tips',       label: '📚 Tips',       title: 'Preparation Guides' },
+  { id: 'thresholds', label: '📊 Thresholds', title: 'Disaster Trigger Conditions' },
 ] as const;
 
 type TabId = (typeof TABS)[number]['id'];
@@ -87,7 +89,7 @@ export default function Sidebar({ assessment, loading, error }: Props) {
         )}
 
         {/* Empty state */}
-        {!loading && !error && !assessment && activeTab !== 'tips' && (
+        {!loading && !error && !assessment && activeTab !== 'tips' && activeTab !== 'thresholds' && (
           <div className="flex flex-col items-center justify-center h-48 text-blue-600 gap-3 px-8 text-center">
             <span className="text-4xl">📍</span>
             <p className="text-sm text-blue-400">Click on the map or search for a location to begin</p>
@@ -101,12 +103,14 @@ export default function Sidebar({ assessment, loading, error }: Props) {
             {activeTab === 'weather' && <WeatherPanel  weather={assessment.weather} />}
             {activeTab === 'alerts'  && <NearbyAlerts lat={assessment.location.lat} lon={assessment.location.lon} />}
             {activeTab === 'past'    && <PastDisasters country={assessment.location.country} />}
-            {activeTab === 'tips'    && <TipsGuides />}
+            {activeTab === 'tips'       && <TipsGuides />}
+            {activeTab === 'thresholds' && <ThresholdsGuide />}
           </>
         )}
 
-        {/* Tips available without location */}
-        {!loading && !error && !assessment && activeTab === 'tips' && <TipsGuides />}
+        {/* These tabs are available without a location selected */}
+        {!loading && !error && !assessment && activeTab === 'tips'       && <TipsGuides />}
+        {!loading && !error && !assessment && activeTab === 'thresholds' && <ThresholdsGuide />}
       </div>
     </div>
   );
